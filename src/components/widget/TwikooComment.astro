@@ -1,0 +1,202 @@
+---
+import { twikooConfig } from "../../config";
+
+interface Props {
+	slug: string;
+}
+
+const { slug } = Astro.props;
+
+// 计算页面路径
+const getPath = () => {
+	if (typeof twikooConfig.path === "function") {
+		return twikooConfig.path(slug);
+	}
+	return twikooConfig.path || `/posts/${slug}/`;
+};
+
+const pagePath = getPath();
+---
+{twikooConfig.enable && (
+<>
+
+<div id="twikoo-container" class="mt-8">
+	<div id="tcomment" class="twikoo-comment-container"></div>
+</div>
+
+<script is:inline data-astro-ignore define:vars={{ twikooConfig, pagePath }}>
+	// 动态加载 Twikoo CSS
+	function loadTwikooCSS() {
+		if (document.querySelector('link[href*="twikoo"]')) return;
+		
+		const link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.href = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.css';
+		document.head.appendChild(link);
+	}
+
+	// 动态加载 Twikoo JS
+	function loadTwikooJS() {
+		return new Promise((resolve, reject) => {
+			if (window.twikoo) {
+				resolve(window.twikoo);
+				return;
+			}
+
+			const script = document.createElement('script');
+			script.src = 'https://cdn.jsdelivr.net/npm/twikoo@1.6.44/dist/twikoo.all.min.js';
+			script.onload = () => resolve(window.twikoo);
+			script.onerror = reject;
+			document.head.appendChild(script);
+		});
+	}
+
+	// 初始化 Twikoo
+	function initTwikoo() {
+		if (!twikooConfig.enable || !document.getElementById('tcomment')) return;
+
+		loadTwikooCSS();
+		
+		loadTwikooJS().then((twikoo) => {
+			const config = {
+				envId: twikooConfig.envId,
+				el: '#tcomment',
+				path: pagePath,
+				lang: twikooConfig.lang || 'zh-CN',
+			};
+
+			// 添加可选配置
+			if (twikooConfig.region) config.region = twikooConfig.region;
+			if (twikooConfig.placeholder) config.placeholder = twikooConfig.placeholder;
+			if (twikooConfig.avatar) config.avatar = twikooConfig.avatar;
+			if (twikooConfig.pageSize) config.pageSize = twikooConfig.pageSize;
+			if (twikooConfig.maxNestLevel) config.maxNestLevel = twikooConfig.maxNestLevel;
+			if (twikooConfig.showImage !== undefined) config.showImage = twikooConfig.showImage;
+			if (twikooConfig.showReply !== undefined) config.showReply = twikooConfig.showReply;
+			if (twikooConfig.showLike !== undefined) config.showLike = twikooConfig.showLike;
+			if (twikooConfig.showAdmin !== undefined) config.showAdmin = twikooConfig.showAdmin;
+			if (twikooConfig.showLevel !== undefined) config.showLevel = twikooConfig.showLevel;
+			if (twikooConfig.readMore !== undefined) config.readMore = twikooConfig.readMore;
+			if (twikooConfig.recent !== undefined) config.recent = twikooConfig.recent;
+			if (twikooConfig.recent_num) config.recent_num = twikooConfig.recent_num;
+
+			twikoo.init(config);
+		}).catch((error) => {
+			console.error('Failed to load Twikoo:', error);
+		});
+	}
+
+	// 主题切换处理
+	function handleThemeChange() {
+		if (window.twikoo && document.getElementById('tcomment')) {
+			// 重新初始化以应用新主题
+			setTimeout(() => {
+				initTwikoo();
+			}, 100);
+		}
+	}
+
+	// 页面加载完成后初始化
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', initTwikoo);
+	} else {
+		initTwikoo();
+	}
+
+	// 监听主题变化
+	document.addEventListener('astro:after-swap', initTwikoo);
+	document.addEventListener('astro:page-load', initTwikoo);
+	
+	// 监听主题切换
+	const observer = new MutationObserver((mutations) => {
+		mutations.forEach((mutation) => {
+			if (mutation.type === 'attributes' && 
+				mutation.attributeName === 'data-theme') {
+				handleThemeChange();
+			}
+		});
+	});
+
+	if (document.documentElement) {
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ['data-theme', 'class']
+		});
+	}
+</script>
+
+<style>
+	.twikoo-comment-container {
+		@apply w-full;
+	}
+
+	/* 自定义 Twikoo 样式以适配博客主题 */
+	:global(.twikoo) {
+		@apply text-black/80 dark:text-white/80;
+	}
+
+	:global(.twikoo .tk-content) {
+		@apply bg-[var(--card-bg)] border border-[var(--line-divider)] rounded-lg;
+	}
+
+	:global(.twikoo .tk-input) {
+		@apply bg-[var(--card-bg)] border border-[var(--line-divider)] text-black/80 dark:text-white/80;
+	}
+
+	:global(.twikoo .tk-input:focus) {
+		@apply border-[var(--primary)] outline-none;
+	}
+
+	:global(.twikoo .tk-submit) {
+		@apply bg-[var(--primary)] hover:bg-[var(--primary)]/80 text-white border-none rounded-lg transition-colors;
+	}
+
+	:global(.twikoo .tk-comment) {
+		@apply border-b border-[var(--line-divider)] pb-4 mb-4;
+	}
+
+	:global(.twikoo .tk-comment:last-child) {
+		@apply border-b-0 mb-0;
+	}
+
+	:global(.twikoo .tk-avatar) {
+		@apply rounded-full;
+	}
+
+	:global(.twikoo .tk-nick) {
+		@apply text-[var(--primary)] font-medium;
+	}
+
+	:global(.twikoo .tk-time) {
+		@apply text-black/50 dark:text-white/50 text-sm;
+	}
+
+	:global(.twikoo .tk-content p) {
+		@apply text-black/80 dark:text-white/80 leading-relaxed;
+	}
+
+	:global(.twikoo .tk-actions) {
+		@apply flex gap-2;
+	}
+
+	:global(.twikoo .tk-action-icon) {
+		@apply text-black/50 dark:text-white/50 hover:text-[var(--primary)] transition-colors cursor-pointer;
+	}
+
+	:global(.twikoo .tk-replies) {
+		@apply ml-8 mt-4 border-l-2 border-[var(--line-divider)] pl-4;
+	}
+
+	:global(.twikoo .tk-admin) {
+		@apply bg-[var(--primary)]/10 border border-[var(--primary)]/20 rounded px-2 py-1 text-xs text-[var(--primary)];
+	}
+
+	/* 响应式设计 */
+	@media (max-width: 768px) {
+		:global(.twikoo .tk-replies) {
+			@apply ml-4;
+		}
+	}
+</style>
+</>
+)}

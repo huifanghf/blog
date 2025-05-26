@@ -68,9 +68,32 @@ export type LicenseConfig = {
 };
 
 export type LIGHT_DARK_MODE =
-	| typeof LIGHT_MODE
+	typeof LIGHT_MODE
 	| typeof DARK_MODE
 	| typeof AUTO_MODE;
+
+export type TwikooConfig = {
+	enable: boolean;
+	envId: string;
+	region?: string;
+	path?: string | ((slug: string) => string);
+	lang?: string;
+	visitorName?: string;
+	visitorEmail?: string;
+	visitorUrl?: string;
+	placeholder?: string;
+	avatar?: string;
+	pageSize?: number;
+	maxNestLevel?: number;
+	showImage?: boolean;
+	showReply?: boolean;
+	showLike?: boolean;
+	showAdmin?: boolean;
+	showLevel?: boolean;
+	readMore?: boolean;
+	recent?: boolean;
+	recent_num?: number;
+};
 
 export type BlogPostData = {
 	body: string;

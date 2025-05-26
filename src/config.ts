@@ -3,6 +3,7 @@ import type {
 	NavBarConfig,
 	ProfileConfig,
 	SiteConfig,
+	TwikooConfig,
 } from "./types/config";
 import { LinkPreset } from "./types/config";
 
@@ -75,4 +76,24 @@ export const licenseConfig: LicenseConfig = {
 	enable: true,
 	name: "CC BY-NC-SA 4.0",
 	url: "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+};
+
+export const twikooConfig: TwikooConfig = {
+	enable: true, // 设置为 true 启用 Twikoo 评论系统
+	envId: "https://docs.wzwzx.cn/", // 您的环境 ID，Vercel 部署填写完整 URL，如 https://your-twikoo.vercel.app
+	region: "", // 腾讯云地域，默认 ap-shanghai
+	path: (slug: string) => `/posts/${slug}/`, // 自定义页面路径
+	lang: "zh-CN", // 语言设置
+	placeholder: "欢迎评论...", // 评论框占位符
+	avatar: "https://cravatar.cn/avatar/", // 头像 CDN
+	pageSize: 10, // 评论分页大小
+	maxNestLevel: 3, // 最大嵌套层级
+	showImage: true, // 显示图片
+	showReply: true, // 显示回复按钮
+	showLike: true, // 显示点赞按钮
+	showAdmin: true, // 显示管理员标识
+	showLevel: true, // 显示等级标识
+	readMore: true, // 显示"阅读更多"按钮
+	recent: true, // 显示最近评论
+	recent_num: 5, // 最近评论数量
 };
