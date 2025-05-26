@@ -13,8 +13,10 @@ import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-di
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
+import { createFontSubsetPlugin } from './src/plugins/vite-plugin-font-subset.mjs';
 import { GithubCardComponent } from "./src/plugins/rehype-component-github-card.mjs";
 import { parseDirectiveNode } from "./src/plugins/remark-directive-rehype.js";
+import { PoemCardComponent, poemChars } from './src/plugins/rehype-component-poem-card.mjs';
 import { remarkExcerpt } from "./src/plugins/remark-excerpt.js";
 import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
@@ -70,6 +72,7 @@ export default defineConfig({
 				{
 					components: {
 						github: GithubCardComponent,
+						poem: PoemCardComponent,
 						note: (x, y) => AdmonitionComponent(x, y, "note"),
 						tip: (x, y) => AdmonitionComponent(x, y, "tip"),
 						important: (x, y) => AdmonitionComponent(x, y, "important"),
@@ -104,6 +107,12 @@ export default defineConfig({
 		],
 	},
 	vite: {
+		plugins: [
+			createFontSubsetPlugin(poemChars, {
+			  srcFont: 'public/fonts/ChenYuluoyan.ttf',
+			  destDir: 'dist/fonts'
+			})
+		  ],
 		build: {
 			rollupOptions: {
 				onwarn(warning, warn) {
