@@ -4,12 +4,14 @@
 INFP
 
 爱好：永劫无间
+
 ---
 联系方式：
 
 Mail: huif@wzwzx.cn
 
 Wechat: Zz0_0Zo
+
 ---
 设备树地址
 ::github{repo="huifanghf/device_oneplus_pickle"}
