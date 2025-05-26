@@ -1,7 +1,7 @@
 @font-face {
     /* 上文提到的开源字体： 辰宇落雁體，可自行前往Github仓库下载，并重命名放在项目根目录下的 /fonts 目录内*/
     font-family: "ChenYuluoyan";
-    src: url("/fonts/ChenYuluoyan.ttf") format("ttf");
+    src: url("/fonts/ChenYuluoyan.woff2") format("woff2");
     font-display: swap;
   }
   
