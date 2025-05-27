@@ -1,0 +1,69 @@
+---
+import '../styles/friends-custom.css';
+
+import MainGridLayout from "../layouts/MainGridLayout.astro"
+
+import { getEntry } from "astro:content"
+import Markdown from "@components/misc/Markdown.astro"
+import I18nKey from "../i18n/i18nKey"
+import { i18n } from "../i18n/translation"
+
+const friendsPost = await getEntry("spec", "friends")
+
+const { Content } = await friendsPost.render()
+
+const items = [
+	{  
+    	title: 'Astro',  
+    	imgurl: 'https://avatars.githubusercontent.com/u/44914786?s=48&v=4',  
+    	desc: 'The web framework for content-driven websites.',  
+    	siteurl: 'https://github.com/withastro/astro',  
+    	tags: ['框架'],  
+    },
+	{
+		title: "彬彬加冰",
+		imgurl: "https://cdn.wzwzx.cn/2025/02/fa.jpg",
+		desc: "想见你，不只是梦里",
+		siteurl: "https://blog.wzwzx.cn",
+		tags: ["个人博客"],
+	},
+];
+---
+<MainGridLayout title={i18n(I18nKey.friends)} description={i18n(I18nKey.friends)}>
+    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+        <div class="card-base z-10 px-9 py-6 relative w-full ">
+            <div class="friends-list grid gap-x-6 gap-y-8 my-4">
+                {items.map((item) => (   
+                    <a href={item.siteurl} target="_blank" rel="noopener noreferrer" class="friends-card group">
+                        <div class="friends-avatar">
+                            <img src={item.imgurl} alt="站点头像" />
+                        </div>
+                        <div class="friends-info">
+                            <div class="friends-title mb-1">{item.title}</div>
+                            <div class="friends-desc">{item.desc}</div>
+                            <div class:list={["items-center", {"flex": true, "hidden md:flex" : false}]}> 
+                                <div class="friends-tags flex flex-row flex-nowrap items-center">
+                                    {(item.tags && item.tags.length > 0) && item.tags.map((tag,i) => (  
+                                    <span class:list={[{"hidden": i==0}, "divider"]}>/</span>  
+                                    <span>{tag}</span>))}
+                                    {!(item.tags && item.tags.length > 0) && <div>{i18n(I18nKey.noTags)}</div>}
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                ))}
+            </div>  
+            <Markdown class="mt-2">
+                <Content />
+            </Markdown>
+        </div>
+    </div>
+</MainGridLayout>
+
+<style>
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+</style>
