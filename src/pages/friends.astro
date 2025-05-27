@@ -7,10 +7,17 @@ import { getEntry } from "astro:content"
 import Markdown from "@components/misc/Markdown.astro"
 import I18nKey from "../i18n/i18nKey"
 import { i18n } from "../i18n/translation"
+import TwikooComment from "@components/widget/TwikooComment.astro";
 
 const friendsPost = await getEntry("spec", "friends")
 
 const { Content } = await friendsPost.render()
+
+export const FriendstwikooConfig = {
+	enable: true, 
+	envId: "https://docs.wzwzx.cn/",
+	path: /friends/, 
+};
 
 const items = [
 	{  
@@ -57,6 +64,16 @@ const items = [
                 <Content />
             </Markdown>
         </div>
+    </div>
+    <div>
+    </br>
+        {FriendstwikooConfig.enable && (
+            <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4">
+                <div class="card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full">
+                    <TwikooComment slug={Content} />
+                </div>
+            </div>
+        )}
     </div>
 </MainGridLayout>
 
