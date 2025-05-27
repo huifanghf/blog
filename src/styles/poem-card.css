@@ -8,8 +8,8 @@
   .poem-card {
     @apply relative my-6 rounded-xl p-10;
     /* 请在项目根目录下的 /public/poem-card 目录下新增两个图片，用作日间模式和黑暗模式状态下诗词卡片的背景 */
-    @apply bg-[url('/poem-card/light.png')] bg-cover bg-top bg-no-repeat;
-    @apply dark:bg-[url('/poem-card/dark.png')] dark:bg-center dark:before:bg-black/30;
+    @apply bg-[url('/poem-card/light.jpg')] bg-cover bg-top bg-no-repeat;
+    @apply dark:bg-[url('/poem-card/dark.jpg')] dark:bg-center dark:before:bg-black/30;
     @apply before:absolute before:inset-0 before:rounded-xl;
     @apply before:backdrop-blur-[12px];
     @apply isolate;
