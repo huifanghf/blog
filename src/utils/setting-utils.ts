@@ -26,7 +26,9 @@ export function setHue(hue: number): void {
 	r.style.setProperty("--hue", String(hue));
 }
 
-export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
+export function applyThemeToDocument(theme: LIGHT_DARK_MODE): void {
+	document.documentElement.classList.add("theme-switching");
+
 	switch (theme) {
 		case LIGHT_MODE:
 			document.documentElement.classList.remove("dark");
@@ -42,6 +44,10 @@ export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
 			}
 			break;
 	}
+
+	setTimeout(() => {
+		document.documentElement.classList.remove("theme-switching");
+	}, 200);
 }
 
 export function setTheme(theme: LIGHT_DARK_MODE): void {

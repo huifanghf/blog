@@ -1,0 +1,119 @@
+:root {
+  transition: 
+    --primary 200ms ease-out,
+    --page-bg 200ms ease-out,
+    --card-bg 200ms ease-out,
+    --deep-text 200ms ease-out;
+}
+
+body {
+  transition: background-color 200ms ease-out;
+  transform: translateZ(0);
+  will-change: background-color;
+}
+
+.navbar,
+#navbar {
+  transition: background-color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+.card-base,
+.float-panel,
+.post-card {
+  transition: background-color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+.btn-regular,
+.btn-plain,
+.btn-card,
+button {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+a,
+.link {
+  transition: color 200ms ease-out;
+}
+
+pre,
+code,
+.codeblock {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+.iconify,
+[data-icon],
+svg {
+  transition: color 200ms ease-out, fill 200ms ease-out;
+}
+
+hr,
+.divider {
+  transition: border-color 200ms ease-out;
+}
+
+table {
+  transition: background-color 200ms ease-out;
+}
+
+input,
+textarea,
+select {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+.toc,
+.sidebar,
+.footer {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+.admonition,
+.alert,
+.notice {
+  transition: background-color 200ms ease-out, color 200ms ease-out;
+  transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  body,
+  .navbar,
+  .card-base,
+  .float-panel,
+  .post-card,
+  .btn-regular,
+  .btn-plain,
+  .btn-card,
+  button,
+  a,
+  pre,
+  code,
+  input,
+  textarea,
+  select {
+    transition: none !important;
+  }
+}
+
+@media (prefers-contrast: high) {
+  :root {
+    transition-duration: 100ms;
+  }
+}
+
+.theme-switching {
+  contain: layout style paint;
+}
+
+@media (min-resolution: 120dpi) {
+  :root {
+    transition-duration: 150ms;
+  }
+}
